@@ -1,3 +1,3 @@
-# CodeGecko
+# CoinGecko
 
-A cloned version of codegecko
+A cloned version of [CoinGecko](https://www.coingecko.com/)
