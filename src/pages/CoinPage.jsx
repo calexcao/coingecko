@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useGetCoinDataQuery } from "../services/cryptoApi";
 import { useParams } from "react-router-dom";
-import { FaCaretUp, FaCaretDown, FaRegStar, FaAngleRight } from "react-icons/fa";
+import { FaCaretUp, FaCaretDown, FaRegStar, FaAngleRight, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom"
 import Calculator from "../components/Calculator";
 import Chart from "../components/Chart";
+import { useSelector, useDispatch } from "react-redux";
+import { addFavorite, removeFavorite } from "../redux/reducers/favoritesReducer";
 
 const CoinPage = () => {
   const { id } = useParams();
@@ -14,6 +16,17 @@ const CoinPage = () => {
   const [timeButton, setTimeButton] = useState(1);
 
   const [showFullDescription, setShowFullDescription] = useState(false);
+
+  const dispatch = useDispatch();
+  const favorites = useSelector((state) => state.favorites.favorites);
+
+  const toggleFavorite = (id) => {
+    if (favorites.includes(id)) {
+      dispatch(removeFavorite(id));
+    } else {
+      dispatch(addFavorite(id));
+    }
+  };
 
   let description = data?.description.en;
 
@@ -79,8 +92,9 @@ const CoinPage = () => {
               </div>
             </div>    
             <div className="mt-1 mb-2 ml-8">
-              <button className="bg-[#1b232d] border-2 border-b-4 border-[#4a6382] text-[#dfe5ec] items-center justify-start font-semibold text-inline rounded-lg select-none focus:outline-none px-2.5 py-1.5 flex w-80 hover:bg-[#212d3b]">
-                <FaRegStar className="inline-block mr-2 mb-0.5 text-lg"/>Add to Favorites</button>
+              <button onClick={() => toggleFavorite(data.id)} className="bg-[#1b232d] border-2 border-b-4 border-[#4a6382] text-[#dfe5ec] items-center justify-start font-semibold text-inline rounded-lg select-none focus:outline-none px-2.5 py-1.5 flex w-80 hover:bg-[#212d3b]">
+                {favorites.includes(data.id) ? (<FaStar className="inline-block mr-2 mb-0.5 text-lg text-yellow-500"/>) : (<FaRegStar className="inline-block mr-2 mb-0.5 text-lg"/>)}
+                {favorites.includes(data.id) ? 'Remove from Favorites' : 'Add to Favorites'}</button>
             </div>
             <div className="flex flex-col ml-8">
               <div className="block">

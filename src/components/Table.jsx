@@ -3,6 +3,9 @@ import { FaCaretUp, FaCaretDown, FaRegStar, FaSearch, FaStar } from "react-icons
 import { FaRankingStar } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux"
+import { addFavorite, removeFavorite } from "../redux/reducers/favoritesReducer"
+import Pagination from '@mui/material/Pagination';
 
 const Table = () => {
   const { data, isFetching } = useGetCoinsQuery();
@@ -11,8 +14,11 @@ const Table = () => {
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortedData, setSortedData] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // New state for search query
-  const [favorites, setFavorites] = useState([]);
   const [showFavorites, setShowFavorites] = useState(false); // New state to toggle between showing all coins and only favorites
+  const [page, setPage] = useState(1);
+
+  const dispatch = useDispatch();
+  const favorites = useSelector((state) => state.favorites.favorites);
 
   const formatNumber = (num) => {
     return num.toLocaleString(undefined, {
@@ -70,9 +76,9 @@ const Table = () => {
 
   const toggleFavorite = (id) => {
     if (favorites.includes(id)) {
-      setFavorites(favorites.filter((fav) => fav !== id));
+      dispatch(removeFavorite(id));
     } else {
-      setFavorites([...favorites, id]);
+      dispatch(addFavorite(id));
     }
   };
 
@@ -164,7 +170,7 @@ const Table = () => {
             </tr>
           </thead>
           <tbody>
-            {sortedData.map((coin, index) => (
+            {sortedData.slice((page - 1) * 20, (page-1) * 20 + 20).map((coin, index) => (
               <tr
                 key={coin.id}
                 className={`border-t border-b border-[#212d3b] text-sm hover:bg-[#1b232d]`}
@@ -212,6 +218,26 @@ const Table = () => {
             ))}
           </tbody>
         </table>
+        <Pagination
+          className="flex justify-center py-2"
+          count={(sortedData?.length / 20).toFixed(0)}
+          onChange={(_, value) => {
+            setPage(value);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          shape="rounded"
+          sx={{button: {
+            color: '#dfe5ec',
+            '&.Mui-selected': {
+              color: '#80e038',
+              backgroundColor: '#19271a'
+            },
+            '&:hover' : {
+              backgroundColor: '#212d3b'
+            },
+            margin: '5px'
+            }}}
+        />
       </div>
     </div>
   );

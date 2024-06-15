@@ -19,7 +19,7 @@ export const cryptoApi = createApi({
             query: () => createRequest('/simple/price?ids=gas&vs_currencies=eth'),
         }),
         getCoins: builder.query({
-            query: () => createRequest('coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false'),
+            query: () => createRequest('coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false'),
         }),
         getCoinData: builder.query({
             query: (id) => createRequest(`coins/${id}`),
