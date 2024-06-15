@@ -1,4 +1,4 @@
-# CoinGecko
+# CoinGecko Clone
 
 A cloned version of [CoinGecko](https://www.coingecko.com/), a cryptocurrency tracking and analytics website.
 
