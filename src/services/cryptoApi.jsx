@@ -22,11 +22,14 @@ export const cryptoApi = createApi({
             query: () => createRequest('coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false'),
         }),
         getCoinData: builder.query({
-            query: () => createRequest('coins/${id}'),
+            query: (id) => createRequest(`coins/${id}`),
+        }),
+        getChartData: builder.query({
+            query: ({id, days}) => createRequest(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${days}`),
         })
     })
 })
 
 export const {
-    useGetGlobalQuery, useGetEthGasQuery, useGetCoinsQuery, useGetCoinDataQuery
+    useGetGlobalQuery, useGetEthGasQuery, useGetCoinsQuery, useGetCoinDataQuery, useGetChartDataQuery,
 } = cryptoApi;

@@ -11,7 +11,7 @@ const Header = () => {
 
   const marketCapPercentage = globalStats?.market_cap_change_percentage_24h_usd;
 
-  if (isFetching || isFetchingGas) return '-';
+  if (isFetching | isFetchingGas) return <div className="bg-[#0d1217] min-h-screen"></div>;
 
   return (
     <nav className="bg-[#0d1217] border-b border-[#212d3b]">
@@ -60,3 +60,4 @@ const Header = () => {
 };
 
 export default Header;
+
